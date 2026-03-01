@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farouk Adam — Web3 Contributor & Researcher</title>
+<meta name="description" content="Personal hub of Farouk Adam — Web3 contributor and researcher focused on decentralized intelligence, onchain systems, and AI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #000000;
+    --bg-card: #0a0a0a;
+    --tan: #c4a882;
+    --tan-hover: #d4b892;
+    --blue: #4a9eff;
+    --blue-dim: rgba(74, 158, 255, 0.10);
+    --green: #34d874;
+    --green-dim: rgba(52, 216, 116, 0.08);
+    --white: #e8e4de;
+    --white-dim: rgba(232, 228, 222, 0.6);
+    --white-muted: rgba(232, 228, 222, 0.3);
+    --border: rgba(232, 228, 222, 0.06);
+    --border-hover: rgba(232, 228, 222, 0.12);
+    --font-display: 'Space Mono', monospace;
+    --font-body: 'Sora', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font-body);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--tan); color: var(--bg); }
+
+  #starfield {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.2rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(16px);
+    background: rgba(0, 0, 0, 0.85);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--tan);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--white-muted); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+  .nav-links a {
+    color: var(--white-dim);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.25s;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  .mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .mobile-toggle span {
+    width: 22px; height: 1.5px;
+    background: var(--white);
+    transition: 0.3s;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 2rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ambient {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(140px);
+    pointer-events: none;
+  }
+
+  .ambient-1 {
+    width: 450px; height: 450px;
+    background: rgba(107, 63, 160, 0.1);
+    top: 5%; right: -5%;
+  }
+
+  .ambient-2 {
+    width: 350px; height: 350px;
+    background: rgba(74, 158, 255, 0.05);
+    bottom: 10%; left: -3%;
+  }
+
+  .hero-content {
+    max-width: 950px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+  }
+
+  .hero-text { flex: 1; }
+
+  .hero-avatar {
+    flex-shrink: 0;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(196, 168, 130, 0.4);
+    box-shadow: 0 0 40px rgba(196, 168, 130, 0.08);
+    opacity: 0;
+    animation: fadeIn 0.8s ease 0.4s forwards;
+  }
+
+  .hero-avatar img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-tag {
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    color: var(--tan);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeIn 0.7s ease 0.1s forwards;
+  }
+
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6.5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeIn 0.7s ease 0.25s forwards;
+  }
+
+  .hero-name .accent { color: var(--tan); }
+
+  .hero-bio {
+    font-size: 1rem;
+    color: var(--white-dim);
+    max-width: 580px;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeIn 0.7s ease 0.4s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeIn 0.7s ease 0.55s forwards;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.6rem;
+    font-family: var(--font-body);
+    font-size: 0.84rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.25s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary { background: var(--tan); color: var(--bg); }
+
+  .btn-primary:hover {
+    background: var(--tan-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(196, 168, 130, 0.2);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid var(--border-hover);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--white-muted);
+    transform: translateY(-1px);
+  }
+
+  section {
+    padding: 6rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-label {
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    color: var(--tan);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    line-height: 1.3;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .about-text {
+    color: var(--white-dim);
+    font-weight: 300;
+    font-size: 0.95rem;
+  }
+
+  .about-text p + p { margin-top: 1.2rem; }
+
+  .about-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .highlight-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
+    transition: all 0.25s;
+  }
+
+  .highlight-card:hover {
+    border-color: var(--border-hover);
+    transform: translateX(3px);
+  }
+
+  .highlight-card .label {
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    color: var(--tan);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .highlight-card .value {
+    font-size: 0.88rem;
+    color: var(--white);
+    font-weight: 400;
+  }
+
+  .wallet-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .wallet-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.8rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .wallet-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .wallet-card.eth::before { background: linear-gradient(90deg, var(--blue), transparent); }
+  .wallet-card.sol::before { background: linear-gradient(90deg, #9945ff, #14f195); }
+
+  .wallet-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  }
+
+  .wallet-chain {
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .wallet-card.eth .wallet-chain { color: var(--blue); }
+  .wallet-card.sol .wallet-chain { color: #14f195; }
+
+  .chain-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .wallet-card.eth .chain-dot { background: var(--blue); }
+  .wallet-card.sol .chain-dot { background: #14f195; }
+
+  .wallet-ens { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; }
+
+  .wallet-address {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    color: var(--white-muted);
+    word-break: break-all;
+    line-height: 1.6;
+    cursor: pointer;
+    transition: color 0.25s;
+  }
+
+  .wallet-address:hover { color: var(--white-dim); }
+
+  .wallet-copy-hint {
+    font-size: 0.68rem;
+    color: var(--white-muted);
+    margin-top: 0.8rem;
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .wallet-card:hover .wallet-copy-hint { opacity: 1; }
+
+  /* ── Conviction Projects ── */
+  .conviction-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .conviction-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.8rem;
+    transition: all 0.3s;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .conviction-card:hover {
+    border-color: rgba(196, 168, 130, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+  }
+
+  .conviction-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .conviction-name {
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+
+  .conviction-tag {
+    font-family: var(--font-display);
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 3px;
+    background: rgba(196, 168, 130, 0.1);
+    color: var(--tan);
+    white-space: nowrap;
+  }
+
+  .conviction-desc {
+    font-size: 0.82rem;
+    color: var(--white-muted);
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .conviction-arrow {
+    font-size: 0.78rem;
+    color: var(--tan);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: all 0.25s;
+    margin-top: auto;
+  }
+
+  .conviction-card:hover .conviction-arrow { opacity: 1; transform: translateX(0); }
+
+  .toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 2rem;
+    padding: 0.6rem 1.4rem;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--white-dim);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .toggle-btn:hover {
+    border-color: var(--border-hover);
+    color: var(--white);
+  }
+
+  /* ── Roles ── */
+  .roles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .role-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    transition: all 0.3s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .role-card:hover {
+    border-color: rgba(196, 168, 130, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+  }
+
+  .role-badge {
+    font-family: var(--font-display);
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+
+  .role-badge.curator { background: var(--green-dim); color: var(--green); }
+  .role-badge.creator { background: var(--blue-dim); color: var(--blue); }
+
+  .role-card h3 { font-size: 1.02rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .role-card p { font-size: 0.8rem; color: var(--white-muted); font-weight: 300; line-height: 1.6; }
+
+  .role-arrow {
+    margin-top: 1.2rem;
+    font-size: 0.78rem;
+    color: var(--tan);
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: all 0.25s;
+  }
+
+  .role-card:hover .role-arrow { opacity: 1; transform: translateX(0); }
+
+  /* ── Social ── */
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.3rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--white);
+    transition: all 0.25s;
+  }
+
+  .social-link:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+
+  .social-icon {
+    width: 34px; height: 34px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .social-icon svg { width: 18px; height: 18px; }
+
+  .social-icon.x { background: var(--white); }
+  .social-icon.x svg { fill: #000; }
+  .social-icon.gh { background: #2a2a2a; }
+  .social-icon.gh svg { fill: var(--white); }
+  .social-icon.li { background: #0a66c2; }
+  .social-icon.li svg { fill: #fff; }
+  .social-icon.fc { background: #8a63d2; }
+  .social-icon.fc svg { fill: #fff; }
+  .social-icon.md { background: #1a1a1a; }
+  .social-icon.md svg { fill: var(--white); }
+  .social-icon.dc { background: #5865f2; }
+  .social-icon.dc svg { fill: #fff; }
+  .social-icon.tg { background: #26a5e4; }
+  .social-icon.tg svg { fill: #fff; }
+
+  .social-info .social-name { font-size: 0.84rem; font-weight: 500; }
+  .social-info .social-handle { font-size: 0.73rem; color: var(--white-muted); font-family: var(--font-display); }
+
+  footer {
+    padding: 3rem 2rem;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-logo { font-family: var(--font-display); font-size: 0.82rem; color: var(--tan); margin-bottom: 0.4rem; font-weight: 700; }
+  .footer-text { font-size: 0.73rem; color: var(--white-muted); }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 100%; left: 0; right: 0;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(16px);
+      padding: 1.5rem 2rem;
+      gap: 1.2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-toggle { display: flex; }
+    .hero { padding: 7rem 1.5rem 3rem; }
+    .hero-content { flex-direction: column-reverse; gap: 2rem; text-align: center; }
+    .hero-avatar { width: 160px; height: 160px; }
+    .hero-actions { justify-content: center; }
+    .about-grid { grid-template-columns: 1fr; }
+    .wallet-cards { grid-template-columns: 1fr; }
+    .roles-grid { grid-template-columns: 1fr; }
+    .social-grid { grid-template-columns: 1fr; }
+    .conviction-grid { grid-template-columns: 1fr; }
+    section { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+
+<nav>
+  <a href="#" class="nav-logo">namedfarouk<span>.xyz</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#web3">Web3</a></li>
+    <li><a href="#convictions">Convictions</a></li>
+    <li><a href="#roles">Roles</a></li>
+    <li><a href="#connect">Connect</a></li>
+  </ul>
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<section class="hero">
+  <div class="ambient ambient-1"></div>
+  <div class="ambient ambient-2"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <p class="hero-tag">Web3 Contributor & Researcher</p>
+      <h1 class="hero-name">Farouk<br><span class="accent">Adam.</span></h1>
+      <p class="hero-bio">
+        Exploring the intersection of blockchain, autonomous agents, and cryptographic coordination. Contributing to projects, research, and ecosystems advancing decentralized technologies, onchain systems, and AI.
+      </p>
+      <div class="hero-actions">
+        <a href="#web3" class="btn btn-primary">View Portfolio →</a>
+        <a href="#connect" class="btn btn-outline">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-avatar">
+      <img src="avatar.jpg" alt="Farouk Adam">
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="about">
+  <div class="reveal">
+    <p class="section-label">About</p>
+    <h2 class="section-title">Building the<br>Decentralized Stack</h2>
+  </div>
+  <div class="about-grid reveal">
+    <div class="about-text">
+      <p>I'm a Web3 contributor and researcher focused on decentralized intelligence, onchain systems, and AI. My work sits at the intersection of blockchain infrastructure, autonomous agents, and cryptographic coordination.</p>
+      <p>I create technical content, participate in ecosystem programs, and build tools that push the boundaries of what decentralized technologies can achieve — making them more accessible, composable, and impactful.</p>
+    </div>
+    <div class="about-highlights">
+      <div class="highlight-card">
+        <div class="label">Focus Areas</div>
+        <div class="value">Decentralized Intelligence · Onchain Systems · AI Agents</div>
+      </div>
+      <div class="highlight-card">
+        <div class="label">Domains</div>
+        <div class="value">Blockchain Infrastructure · Cryptographic Coordination · DeFi</div>
+      </div>
+      <div class="highlight-card">
+        <div class="label">Activities</div>
+        <div class="value">Technical Writing · Ecosystem Programs · Open Source</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="web3">
+  <div class="reveal">
+    <p class="section-label">Onchain</p>
+    <h2 class="section-title">Onchain Identity</h2>
+  </div>
+  <div class="wallet-cards reveal">
+    <div class="wallet-card eth">
+      <div class="wallet-chain"><span class="chain-dot"></span> Ethereum</div>
+      <div class="wallet-ens">namedfarouk.eth</div>
+      <div class="wallet-address" onclick="copyAddress(this, '0xC19F233A15bd6464EFf6aF3c78f70037233a9ac7')">0xC19F233A15bd6464EFf6aF3c78f70037233a9ac7</div>
+      <div class="wallet-copy-hint">Click to copy</div>
+    </div>
+    <div class="wallet-card sol">
+      <div class="wallet-chain"><span class="chain-dot"></span> Solana</div>
+      <div class="wallet-ens">Solana Wallet</div>
+      <div class="wallet-address" onclick="copyAddress(this, '46AScPygJWvCSJmv8H58kcMMBvE2w5BSb7JXwhGURETr')">46AScPygJWvCSJmv8H58kcMMBvE2w5BSb7JXwhGURETr</div>
+      <div class="wallet-copy-hint">Click to copy</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Conviction Projects - rendered from JS data -->
+<section id="convictions">
+  <div class="reveal">
+    <p class="section-label">Convictions</p>
+    <h2 class="section-title">Top Conviction Projects</h2>
+  </div>
+  <div class="conviction-grid reveal" id="convictionGrid"></div>
+  <button class="toggle-btn reveal" id="toggleProjects" style="display:none;"></button>
+</section>
+
+<div class="divider"></div>
+
+<section id="roles">
+  <div class="reveal">
+    <p class="section-label">Roles</p>
+    <h2 class="section-title">Where I Contribute</h2>
+  </div>
+  <div class="roles-grid reveal">
+    <a href="https://x.com/geoprotocol" target="_blank" rel="noopener" class="role-card">
+      <span class="role-badge curator">Curator</span>
+      <h3>Geo Protocol</h3>
+      <p>Curating content and community around geospatial decentralized infrastructure.</p>
+      <div class="role-arrow">→ View on X</div>
+    </a>
+    <a href="https://x.com/CoinMarketCap" target="_blank" rel="noopener" class="role-card">
+      <span class="role-badge creator">Creator</span>
+      <h3>CoinMarketCap</h3>
+      <p>Creating content covering crypto markets, protocols, and ecosystems.</p>
+      <div class="role-arrow">→ View on X</div>
+    </a>
+    <a href="https://x.com/LunarBaseX" target="_blank" rel="noopener" class="role-card">
+      <span class="role-badge creator">Creator</span>
+      <h3>LunarBaseX</h3>
+      <p>Building and creating content for the LunarBaseX ecosystem.</p>
+      <div class="role-arrow">→ View on X</div>
+    </a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="connect">
+  <div class="reveal">
+    <p class="section-label">Connect</p>
+    <h2 class="section-title">Find Me Online</h2>
+  </div>
+  <div class="social-grid reveal">
+    <a href="https://x.com/NamedFarouk" target="_blank" rel="noopener" class="social-link">
+      <div class="social-icon x"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
+      <div class="social-info"><div class="social-name">X / Twitter</div><div class="social-handle">@NamedFarouk</div></div>
+    </a>
+    <a href="https://github.com/namedfarouk" target="_blank" rel="noopener" class="social-link">
+      <div class="social-icon gh"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></div>
+      <div class="social-info"><div class="social-name">GitHub</div><div class="social-handle">namedfarouk</div></div>
+    </a>
+    <a href="https://www.linkedin.com/in/farouk-adam/" target="_blank" rel="noopener" class="social-link">
+      <div class="social-icon li"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div>
+      <div class="social-info"><div class="social-name">LinkedIn</div><div class="social-handle">farouk-adam</div></div>
+    </a>
+    <a href="https://farcaster.xyz/namedfarouk" target="_blank" rel="noopener" class="social-link">
+      <div class="social-icon fc"><svg viewBox="0 0 24 24"><path d="M5.303 3.5h13.394v1.5H5.303zm-1.5 3h16.394v1H21.5l-1 10h-1.197l-.303-3H5l-.303 3H3.5l-1-10h1.303zm3.697 4.5a2.5 2.5 0 0 0-2.5 2.5V15h1.5v-1.5a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1V15H11v-1.5a2.5 2.5 0 0 0-2.5-2.5zm8 0a2.5 2.5 0 0 0-2.5 2.5V15h1.5v-1.5a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1V15H19v-1.5a2.5 2.5 0 0 0-2.5-2.5z"/></svg></div>
+      <div class="social-info"><div class="social-name">Farcaster</div><div class="social-handle">namedfarouk</div></div>
+    </a>
+    <a href="https://medium.com/@faroukadam002" target="_blank" rel="noopener" class="social-link">
+      <div class="social-icon md"><svg viewBox="0 0 24 24"><path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg></div>
+      <div class="social-info"><div class="social-name">Medium</div><div class="social-handle">@faroukadam002</div></div>
+    </a>
+    <a href="https://discord.com/users/906194753874448415" target="_blank" rel="noopener" class="social-link">
+      <div class="social-icon dc"><svg viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></svg></div>
+      <div class="social-info"><div class="social-name">Discord</div><div class="social-handle">namedfarouk</div></div>
+    </a>
+    <a href="https://t.me/+_embzBYLRA8xYzE0" target="_blank" rel="noopener" class="social-link">
+      <div class="social-icon tg"><svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></div>
+      <div class="social-info"><div class="social-name">FK Orbit</div><div class="social-handle">Telegram Community</div></div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">FK</div>
+  <p class="footer-text">Built different. Building decentralized.</p>
+</footer>
+
+<script>
+  // ═══════════════════════════════════════════════════════════════
+  //  CONVICTION PROJECTS — Edit this list to add/remove projects
+  //  Shows 3 at a time. Click "View all" to see the rest.
+  // ═══════════════════════════════════════════════════════════════
+  const PROJECTS = [
+    {
+      name: "Ethereum",
+      tag: "Infrastructure",
+      desc: "The foundation for decentralized applications and smart contracts.",
+      url: "https://ethereum.org"
+    },
+    {
+      name: "Filecoin",
+      tag: "Storage",
+      desc: "Decentralized storage network built on cryptographic proofs.",
+      url: "https://filecoin.io"
+    },
+    {
+      name: "Autonolas",
+      tag: "AI x Crypto",
+      desc: "A unified ecosystem for co-owned AI agents that live on and off chain.",
+      url: "https://olas.network"
+    },
+    // ── Add more projects below this line ──
+    // {
+    //   name: "Project Name",
+    //   tag: "Category",
+    //   desc: "Short description of the project.",
+    //   url: "https://example.com"
+    // },
+  ];
+
+  const VISIBLE_COUNT = 3;
+  // ═══════════════════════════════════════════════════════════════
+
+  const grid = document.getElementById('convictionGrid');
+  const toggleBtn = document.getElementById('toggleProjects');
+  let showAll = false;
+
+  function renderProjects() {
+    const visible = showAll ? PROJECTS : PROJECTS.slice(0, VISIBLE_COUNT);
+    grid.innerHTML = visible.map(p => `
+      <a href="${p.url}" target="_blank" rel="noopener" class="conviction-card">
+        <div class="conviction-header">
+          <span class="conviction-name">${p.name}</span>
+          <span class="conviction-tag">${p.tag}</span>
+        </div>
+        <p class="conviction-desc">${p.desc}</p>
+        <div class="conviction-arrow">→ Learn more</div>
+      </a>
+    `).join('');
+
+    if (PROJECTS.length > VISIBLE_COUNT) {
+      toggleBtn.style.display = 'inline-flex';
+      toggleBtn.textContent = showAll
+        ? `Show less ↑`
+        : `View all ${PROJECTS.length} projects →`;
+    }
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    showAll = !showAll;
+    renderProjects();
+  });
+
+  renderProjects();
+
+  // Starfield
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function initStars() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    stars = [];
+    const count = Math.floor((canvas.width * canvas.height) / 8000);
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 1.2 + 0.2,
+        opacity: Math.random() * 0.4 + 0.05,
+        speed: Math.random() * 0.008 + 0.002,
+        offset: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function draw(t) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const s of stars) {
+      const a = s.opacity * (Math.sin(t * s.speed + s.offset) * 0.25 + 0.75);
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(232, 228, 222, ${a})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+
+  initStars();
+  requestAnimationFrame(draw);
+  window.addEventListener('resize', initStars);
+
+  // Mobile nav
+  document.getElementById('mobileToggle').addEventListener('click', () =>
+    document.getElementById('navLinks').classList.toggle('open')
+  );
+  document.querySelectorAll('#navLinks a').forEach(a =>
+    a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
+  );
+
+  // Copy wallet
+  function copyAddress(el, address) {
+    navigator.clipboard.writeText(address).then(() => {
+      const hint = el.nextElementSibling;
+      hint.textContent = 'Copied!';
+      hint.style.opacity = '1';
+      hint.style.color = '#34d874';
+      setTimeout(() => { hint.textContent = 'Click to copy'; hint.style.color = ''; }, 2000);
+    });
+  }
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
