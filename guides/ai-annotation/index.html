@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Annotation Platforms Guide — Farouk Adam</title>
+<meta name="description" content="Getting started and earning on AI annotation platforms like Outlier and Handshake, plus support ticket templates for common access issues.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #000000; --bg-card: #0a0a0a; --tan: #c4a882; --tan-hover: #d4b892;
+    --blue: #4a9eff; --blue-dim: rgba(74,158,255,0.10); --green: #34d874; --green-dim: rgba(52,216,116,0.08);
+    --white: #e8e4de; --white-dim: rgba(232,228,222,0.6); --white-muted: rgba(232,228,222,0.3);
+    --border: rgba(232,228,222,0.06); --border-hover: rgba(232,228,222,0.12);
+    --font-display: 'Space Mono', monospace; --font-body: 'Sora', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--white); font-family: var(--font-body); line-height: 1.7; overflow-x: hidden; }
+  ::selection { background: var(--tan); color: var(--bg); }
+  #starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.2rem 2rem; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(16px); background: rgba(0,0,0,0.85); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--tan); letter-spacing: 0.04em; text-decoration: none; }
+  .nav-logo span { color: var(--white-muted); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--white-dim); text-decoration: none; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.25s; }
+  .nav-links a:hover { color: var(--white); }
+  .mobile-toggle { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; }
+  .mobile-toggle span { width: 22px; height: 1.5px; background: var(--white); transition: 0.3s; }
+
+  .ambient { position: absolute; border-radius: 50%; filter: blur(140px); pointer-events: none; }
+  .ambient-1 { width: 450px; height: 450px; background: rgba(107,63,160,0.1); top: 0; right: -5%; }
+
+  .wrap { max-width: 820px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+  header.page-head { padding: 9.5rem 0 2rem; }
+  .breadcrumb { font-family: var(--font-display); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem; }
+  .breadcrumb a { color: var(--white-muted); text-decoration: none; transition: color 0.2s; }
+  .breadcrumb a:hover { color: var(--tan); }
+  .breadcrumb span { color: var(--white-muted); margin: 0 0.5rem; }
+  .breadcrumb .current { color: var(--white-dim); }
+  .page-tag { font-family: var(--font-display); font-size: 0.72rem; color: var(--tan); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.2rem; }
+  .page-title { font-family: var(--font-display); font-size: clamp(1.8rem, 4.5vw, 2.8rem); font-weight: 700; line-height: 1.15; margin-bottom: 1.2rem; }
+  .page-title .accent { color: var(--tan); }
+  .page-intro { font-size: 1rem; color: var(--white-dim); font-weight: 300; line-height: 1.8; }
+
+  .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 1.8rem; margin: 2.5rem 0; }
+  .toc-label { font-family: var(--font-display); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--tan); margin-bottom: 0.9rem; }
+  .toc ol { list-style: none; counter-reset: toc; }
+  .toc li { counter-increment: toc; margin: 0.45rem 0; font-size: 0.9rem; }
+  .toc li::before { content: counter(toc, decimal-leading-zero); color: var(--white-muted); font-family: var(--font-display); font-size: 0.72rem; margin-right: 0.8rem; }
+  .toc a { color: var(--white-dim); text-decoration: none; transition: color 0.2s; }
+  .toc a:hover { color: var(--white); }
+
+  .guide-section { padding: 2.5rem 0; border-top: 1px solid var(--border); }
+  .guide-section h2 { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; scroll-margin-top: 6rem; }
+  .guide-section h3 { font-size: 1.02rem; font-weight: 600; margin: 1.6rem 0 0.6rem; color: var(--white); }
+  .guide-section p { color: var(--white-dim); font-weight: 300; margin-bottom: 1rem; }
+  .guide-section ul, .guide-section ol { color: var(--white-dim); font-weight: 300; margin: 0 0 1rem 1.2rem; }
+  .guide-section li { margin-bottom: 0.5rem; }
+  .guide-section strong { color: var(--white); font-weight: 600; }
+
+  .placeholder { background: rgba(74,158,255,0.04); border: 1px dashed rgba(74,158,255,0.25); border-radius: 10px; padding: 1.2rem 1.4rem; color: var(--white-muted); font-size: 0.88rem; font-weight: 300; }
+  .placeholder strong { color: var(--blue); }
+
+  .template { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 1.6rem; margin: 1.5rem 0; }
+  .template-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+  .template-head h3 { margin: 0; font-family: var(--font-display); font-size: 0.92rem; font-weight: 700; }
+  .copy-btn { font-family: var(--font-display); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tan); background: transparent; border: 1px solid var(--border-hover); border-radius: 6px; padding: 0.4rem 0.8rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .copy-btn:hover { border-color: var(--tan); color: var(--tan-hover); }
+  .copy-btn.copied { color: var(--green); border-color: var(--green); }
+  .field-label { font-family: var(--font-display); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--white-muted); margin: 1rem 0 0.4rem; }
+  .field-label:first-of-type { margin-top: 0; }
+  .field-text { background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1.1rem; font-size: 0.88rem; color: var(--white-dim); white-space: pre-wrap; line-height: 1.65; }
+  .field-text .ph { color: var(--tan); }
+
+  .tip { background: var(--green-dim); border-left: 2px solid var(--green); border-radius: 0 8px 8px 0; padding: 1rem 1.2rem; margin: 1.2rem 0; font-size: 0.88rem; color: var(--white-dim); font-weight: 300; }
+  .note { background: rgba(196, 168, 130, 0.06); border-left: 2px solid var(--tan); border-radius: 0 8px 8px 0; padding: 0.8rem 1.1rem; margin: 1rem 0; font-size: 0.84rem; color: var(--white-dim); font-weight: 300; }
+  .note ul { margin: 0.4rem 0 0 1.1rem; }
+  .guide-section ol { counter-reset: none; }
+  .guide-section ol li { margin-bottom: 0.55rem; padding-left: 0.2rem; }
+  .sub { font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tan); margin: 1.8rem 0 0.6rem; }
+  .cv { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.8rem 1.7rem; margin: 1.5rem 0; }
+  .cv-name { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--white); margin-bottom: 0.3rem; }
+  .cv-tagline { color: var(--tan); font-size: 0.9rem; font-weight: 500; margin-bottom: 0.4rem; }
+  .cv-contact { color: var(--white-muted); font-size: 0.8rem; font-family: var(--font-display); margin-bottom: 0.4rem; word-break: break-word; }
+  .cv h4 { font-family: var(--font-display); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--tan); margin: 1.6rem 0 0.5rem; border-top: 1px solid var(--border); padding-top: 1.2rem; }
+  .cv p { font-size: 0.87rem; color: var(--white-dim); font-weight: 300; margin-bottom: 0.6rem; }
+  .cv ul { margin: 0.3rem 0 0.6rem 1.2rem; color: var(--white-dim); font-weight: 300; font-size: 0.87rem; }
+  .cv li { margin-bottom: 0.35rem; }
+  .cv .role-line { color: var(--white); font-weight: 500; font-size: 0.9rem; margin: 0.6rem 0 0.2rem; }
+  .cv .role-meta { color: var(--white-muted); font-size: 0.8rem; margin-bottom: 0.4rem; }
+  .cv .branch { color: var(--tan); font-size: 0.78rem; font-style: italic; margin: 1rem 0 0.3rem; }
+
+  footer { padding: 3rem 2rem; text-align: center; border-top: 1px solid var(--border); margin-top: 2rem; position: relative; z-index: 1; }
+  .footer-logo { font-family: var(--font-display); font-size: 0.82rem; color: var(--tan); margin-bottom: 0.4rem; font-weight: 700; }
+  .footer-text { font-size: 0.73rem; color: var(--white-muted); }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: all 0.6s cubic-bezier(0.22,1,0.36,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(16px); padding: 1.5rem 2rem; gap: 1.2rem; border-bottom: 1px solid var(--border); }
+    .mobile-toggle { display: flex; }
+    header.page-head { padding: 8rem 0 1.5rem; }
+    .wrap { padding: 0 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+<div class="ambient ambient-1"></div>
+
+<nav>
+  <a href="https://namedfarouk.xyz/" class="nav-logo">namedfarouk<span>.xyz</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="https://namedfarouk.xyz/#about">About</a></li>
+    <li><a href="https://namedfarouk.xyz/#web3">Web3</a></li>
+    <li><a href="/guides">Guides</a></li>
+    <li><a href="https://namedfarouk.xyz/#contact">Contact</a></li>
+  </ul>
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="wrap">
+  <header class="page-head reveal">
+    <div class="breadcrumb"><a href="/guides">Guides</a><span>/</span><span class="current">AI Annotation</span></div>
+    <p class="page-tag">Guide</p>
+    <h1 class="page-title">AI Annotation <span class="accent">Platforms</span></h1>
+    <p class="page-intro">Everything I wish I knew when I started earning on AI annotation platforms. How to sign up, how to present yourself, how to fix the errors that trip people up, and exactly what to send support when a project disappears on you.</p>
+
+    <div class="toc">
+      <p class="toc-label">In this guide</p>
+      <ol>
+        <li><a href="#outlier">Sign up on Outlier</a></li>
+        <li><a href="#handshake">Sign up on Handshake</a></li>
+        <li><a href="#cv">CV template</a></li>
+        <li><a href="#form-error">Fixing Handshake's "Form not found"</a></li>
+        <li><a href="#support">Support ticket templates</a></li>
+      </ol>
+    </div>
+  </header>
+
+  <section class="guide-section reveal" id="outlier">
+    <h2>1. Sign up on Outlier</h2>
+    <ol>
+      <li>Create a brand new Gmail account that you will use only for this project. Keep it separate from your personal email.</li>
+      <li>Sign in to that new Gmail first, before you start the Outlier registration. This makes the next steps smoother.</li>
+      <li>Open your browser and search "Outlier ai" on Google, then open the first result you see.</li>
+      <li>Click "View Opportunities".</li>
+      <li>Click "Generalist", then under Generalist select "English Writing". Make sure you pick the option that lists UK, USA, and Canada as supported countries.</li>
+      <li>Click "Apply Now".</li>
+      <li>A Google prompt will pop up asking you to sign up. Click "Sign up with Google".</li>
+      <li>Select your new Google account to continue.</li>
+      <li>Fill in all the required information.</li>
+      <li>Enter your share code to verify your identity.</li>
+    </ol>
+    <div class="note">
+      A few things that save people trouble:
+      <ul>
+        <li>Verify your identity with the share code only. Do not use passport or driver's license, since only the share code validates project access.</li>
+        <li>Do not link your LinkedIn profile. Just upload a good resume or CV.</li>
+        <li>Then complete your registration.</li>
+        <li>The project should drop between 2 and 3 days later.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="guide-section reveal" id="handshake">
+    <h2>2. Sign up on Handshake</h2>
+    <p>This is a detailed, step by step process for opening a Handshake AI account and qualifying for AI training jobs. It adds the critical technical steps drawn from official support documentation and community insights on X.</p>
+
+    <p class="sub">1. Initial access and sign up</p>
+    <p>Instead of the general Handshake homepage, use the dedicated fellowship portal so you are correctly funneled into the AI program.</p>
+    <ul>
+      <li>Primary link: <a href="https://joinhandshake.com/fellowship-program" target="_blank" rel="noopener" style="color: var(--tan);">joinhandshake.com/fellowship-program</a></li>
+      <li>Action: click "Sign up now".</li>
+    </ul>
+
+    <p class="sub">2. Account type selection</p>
+    <ul>
+      <li>Existing users: if you already have a Handshake account through your university, select "Log in" and use your existing credentials. This links your student profile to the AI program.</li>
+      <li>New users, school is a partner: search for your school under "Find your school".</li>
+      <li>New users, graduate or school not listed: enter your personal or alumni email to proceed.</li>
+    </ul>
+
+    <p class="sub">3. Profile and document completion</p>
+    <p>Unlike a standard job board, Handshake AI needs specific documentation to match you with frontier AI labs.</p>
+    <ul>
+      <li>Resume upload: upload a current resume. Labs use this to match your subject matter expertise, such as STEM, humanities, or coding, to specific training projects.</li>
+      <li>Skills tagging: include specific skills like "Data Annotation," "Content Evaluation," or specialized domain knowledge such as "Python" or "Medical Writing".</li>
+    </ul>
+
+    <p class="sub">4. Security and identity verification (critical step)</p>
+    <p>This is required before you can see any "AI Work" tasks.</p>
+    <ul>
+      <li>Email confirmation: verify your email via the link sent to your inbox.</li>
+      <li>Phone verification: you may be prompted to verify a US based phone number via SMS.</li>
+      <li>Identity verification: Handshake uses a third party service. You will need a government issued ID (driver's license, passport, or state ID) and a live photo or selfie to match the ID.</li>
+      <li>This usually takes a few minutes to a few hours to approve.</li>
+    </ul>
+
+    <p class="sub">5. Accessing the "AI Work" dashboard</p>
+    <p>Once your identity is verified, your dashboard switches from a standard job search view to the Handshake AI Dashboard.</p>
+    <ul>
+      <li>Project matching: you do not apply to individual tasks. You are matched to projects based on your profile.</li>
+      <li>Onboarding: if a project is available, you will see an "Onboarding" or "Join" button. You must complete project specific training, usually asynchronous, before you can start earning.</li>
+    </ul>
+  </section>
+
+  <section class="guide-section reveal" id="cv">
+    <h2>3. CV template</h2>
+    <div class="note"><strong>Read first.</strong> Fill every [bracket] with something true for you. Only keep an experience entry, tool, or certification if you have actually done or used it. A short honest CV beats an inflated one, because these platforms run assessments and quality reviews that quickly expose anything you cannot back up. If you are brand new with no prior roles, use the "no formal experience yet" version of the experience section below and lean on your skills, projects, and certifications instead.</div>
+
+    <div class="template-head" style="margin-bottom: 0.8rem;">
+      <h3 style="font-family: var(--font-display); font-size: 0.92rem; font-weight: 700; margin: 0;">The template</h3>
+      <button class="copy-btn" data-copy="cv">Copy CV</button>
+    </div>
+
+    <div class="cv">
+      <div class="cv-name">[YOUR FULL NAME]</div>
+      <div class="cv-tagline">AI Data Specialist • Prompt Engineer • LLM Evaluator</div>
+      <div class="cv-contact">[City, Country] • [email@example.com] • [+000 000 0000] • linkedin.com/in/[username]</div>
+
+      <h4>Professional Summary</h4>
+      <p>Detail-oriented AI Data Specialist with experience in AI model evaluation, prompt engineering, and human-in-the-loop training. Skilled at assessing LLM outputs for accuracy, safety, coherence, and alignment with user intent. Able to craft, refine, and stress-test prompts across generative AI systems. Committed to advancing responsible AI through careful data annotation, quality assurance, and feedback that improves model behaviour.</p>
+      <div class="note">If you are new, swap the opening line for something true, e.g. "Detail-oriented contributor with strong written communication and a fast-growing skill set in AI model evaluation and data annotation."</div>
+
+      <h4>Core Competencies</h4>
+      <p><strong>AI Evaluation:</strong> LLM response rating &amp; ranking, model output quality assessment, conversational AI evaluation, AI safety &amp; alignment review</p>
+      <p><strong>Prompt Engineering:</strong> Prompt design, optimization &amp; stress-testing, instruction validation, zero-shot &amp; few-shot prompting</p>
+      <p><strong>Data &amp; Annotation:</strong> Data labeling, data annotation, human-in-the-loop training, RLHF feedback, content moderation &amp; classification</p>
+      <p><strong>Research &amp; QA:</strong> Fact-checking, web research, rubric-based content assessment, QA review &amp; error detection, search result evaluation</p>
+      <p><strong>Writing &amp; Review:</strong> Grammar, readability &amp; tone review, technical writing, strong written communication</p>
+      <p><strong>Technical Skills:</strong> Python (basic/intermediate), SQL, API understanding, ML fundamentals, NLP concepts, Microsoft Office Suite</p>
+      <div class="note">Keep only the competencies you can speak to in an assessment. Trim the rest.</div>
+
+      <h4>Professional Experience</h4>
+      <p class="branch">Use this version if you have done annotation or evaluation work</p>
+      <p class="role-line">AI Response Evaluator (Freelance / Contract) | [Platform Name, e.g. Outlier]</p>
+      <p class="role-meta">Month YYYY – Present</p>
+      <ul>
+        <li>Rated and ranked AI-generated responses across diverse domains using structured rubrics covering accuracy, helpfulness, coherence, and safety.</li>
+        <li>Engineered, tested, and refined prompts to evaluate LLM instruction-following, edge-case handling, and response quality.</li>
+        <li>Provided feedback that improved model alignment with human preferences across multiple task batches.</li>
+        <li>Identified and flagged harmful, misleading, or policy-violating content as part of safety and moderation workflows.</li>
+        <li>Conducted web research and fact-checked outputs to validate factual accuracy and sourcing.</li>
+      </ul>
+      <div class="note">Add a Data Annotator entry only if you have actually done labeling work. If you have, describe the real datasets and guidelines you worked with rather than generic claims.</div>
+      <p class="branch">Use this version instead if you have no formal experience yet</p>
+      <p class="role-line">Relevant Experience &amp; Projects</p>
+      <ul>
+        <li>[Any task-based, freelance, academic, or volunteer work that shows attention to detail, written communication, or research, e.g. reviewing content, organizing data, writing reports.]</li>
+        <li>[Personal or learning project, e.g. completed a prompt engineering course and applied it to test ChatGPT / Claude outputs for accuracy and consistency.]</li>
+        <li>[Any transferable role: tutoring, customer support, writing, research, admin, that involved careful, accurate work.]</li>
+      </ul>
+
+      <h4>Education</h4>
+      <p class="role-line">[Degree Title, e.g. B.Sc. Computer Science] | [University / College Name]</p>
+      <p class="role-meta">Month YYYY – Month YYYY</p>
+      <p>Relevant Coursework: [only courses you actually took that fit, e.g. Natural Language Processing, Data Analysis, Technical Writing]</p>
+
+      <h4>Certifications &amp; Training</h4>
+      <ul>
+        <li>[e.g. Google Data Analytics Certificate, Coursera, Year]</li>
+        <li>[e.g. DeepLearning.AI, ChatGPT Prompt Engineering for Developers, Year]</li>
+        <li>[e.g. Platform onboarding or assessment passed, e.g. Outlier project assessment, Year]</li>
+      </ul>
+      <div class="note">List only certifications you have earned. A few real ones beat a long fake list.</div>
+
+      <h4>Tools &amp; Platforms</h4>
+      <p><strong>AI / LLM Tools:</strong> [e.g. ChatGPT, Claude, Gemini]</p>
+      <p><strong>Annotation / Evaluation Platforms:</strong> [e.g. Outlier, Handshake, Appen]</p>
+      <p><strong>Productivity:</strong> [e.g. Microsoft Office, Google Workspace]</p>
+      <p><strong>Development (if applicable):</strong> [e.g. Python, SQL, VS Code]</p>
+      <div class="note">Keep only what you have genuinely used. Remotasks was the earlier brand that became Outlier under Scale AI, so list one, not both.</div>
+
+      <h4>Languages</h4>
+      <p>[e.g. English – Native / Fluent | [Language 2] – Conversational / Intermediate]</p>
+
+      <h4>Availability &amp; Work Preference</h4>
+      <p>Available for remote, part-time or full-time contract work. Open to asynchronous, task-based projects. [Time zone, e.g. WAT / UTC+1]</p>
+    </div>
+
+<pre id="cv-plain" style="display:none;">[YOUR FULL NAME]
+AI Data Specialist | Prompt Engineer | LLM Evaluator
+[City, Country] | [email@example.com] | [+000 000 0000] | linkedin.com/in/[username]
+
+PROFESSIONAL SUMMARY
+Detail-oriented AI Data Specialist with experience in AI model evaluation, prompt engineering, and human-in-the-loop training. Skilled at assessing LLM outputs for accuracy, safety, coherence, and alignment with user intent. Able to craft, refine, and stress-test prompts across generative AI systems. Committed to advancing responsible AI through careful data annotation, quality assurance, and feedback that improves model behaviour.
+
+CORE COMPETENCIES
+AI Evaluation: LLM response rating & ranking, model output quality assessment, conversational AI evaluation, AI safety & alignment review
+Prompt Engineering: Prompt design, optimization & stress-testing, instruction validation, zero-shot & few-shot prompting
+Data & Annotation: Data labeling, data annotation, human-in-the-loop training, RLHF feedback, content moderation & classification
+Research & QA: Fact-checking, web research, rubric-based content assessment, QA review & error detection, search result evaluation
+Writing & Review: Grammar, readability & tone review, technical writing, strong written communication
+Technical Skills: Python (basic/intermediate), SQL, API understanding, ML fundamentals, NLP concepts, Microsoft Office Suite
+
+PROFESSIONAL EXPERIENCE
+AI Response Evaluator (Freelance / Contract) | [Platform Name, e.g. Outlier] | Month YYYY - Present
+- Rated and ranked AI-generated responses across diverse domains using structured rubrics covering accuracy, helpfulness, coherence, and safety.
+- Engineered, tested, and refined prompts to evaluate LLM instruction-following, edge-case handling, and response quality.
+- Provided feedback that improved model alignment with human preferences across multiple task batches.
+- Identified and flagged harmful, misleading, or policy-violating content as part of safety and moderation workflows.
+- Conducted web research and fact-checked outputs to validate factual accuracy and sourcing.
+
+(No formal experience yet? Use this instead.)
+Relevant Experience & Projects
+- [Any task-based, freelance, academic, or volunteer work that shows attention to detail, written communication, or research.]
+- [Personal or learning project, e.g. completed a prompt engineering course and applied it to test ChatGPT / Claude outputs.]
+- [Any transferable role: tutoring, customer support, writing, research, admin, that involved careful, accurate work.]
+
+EDUCATION
+[Degree Title, e.g. B.Sc. Computer Science] | [University / College Name] | Month YYYY - Month YYYY
+Relevant Coursework: [only courses you actually took that fit]
+
+CERTIFICATIONS & TRAINING
+- [e.g. Google Data Analytics Certificate, Coursera, Year]
+- [e.g. DeepLearning.AI, ChatGPT Prompt Engineering for Developers, Year]
+- [e.g. Outlier project assessment passed, Year]
+
+TOOLS & PLATFORMS
+AI / LLM Tools: [e.g. ChatGPT, Claude, Gemini]
+Annotation / Evaluation Platforms: [e.g. Outlier, Handshake, Appen]
+Productivity: [e.g. Microsoft Office, Google Workspace]
+Development (if applicable): [e.g. Python, SQL, VS Code]
+
+LANGUAGES
+[e.g. English - Native / Fluent | [Language 2] - Conversational / Intermediate]
+
+AVAILABILITY & WORK PREFERENCE
+Available for remote, part-time or full-time contract work. Open to asynchronous, task-based projects. [Time zone, e.g. WAT / UTC+1]</pre>
+  </section>
+
+  <section class="guide-section reveal" id="form-error">
+    <h2>4. Fixing Handshake's "Form not found"</h2>
+    <p>If the "Get started" button under a project's assessment step sends you to a blank "Form not found" page, the onboarding link is broken on Handshake's side, not yours. Email their fellow support team and ask for a working link. Here is a ready template. Swap in the parts highlighted in <span style="color:var(--tan)">tan</span>, and attach the two screenshots mentioned in the message.</p>
+
+    <div class="template">
+      <div class="template-head">
+        <h3>"Form not found" support email</h3>
+        <button class="copy-btn" data-copy="tplForm">Copy</button>
+      </div>
+      <p class="field-label">Send to</p>
+      <div class="field-text" id="tplForm-to">fellow-support@joinhandshake.com</div>
+      <p class="field-label">Subject</p>
+      <div class="field-text" id="tplForm-subject">Issue accessing Project <span class="ph">&lt;NAME&gt;</span> assessment: "Form not found" error</div>
+      <p class="field-label">Message</p>
+      <div class="field-text" id="tplForm-body">Hi Handshake Support Team,
+
+I am writing to report a broken link in the "AI Work" onboarding section of my Handshake profile.
+
+I am currently trying to complete the onboarding steps for Project <span class="ph">&lt;NAME&gt;</span>. However, when I click the "Get started" button under the "Project assessment" step, I am redirected to a blank page that says "Form not found: The form you're looking for doesn't exist or has been removed."
+
+For your reference, my Handshake Profile ID is: <span class="ph">&lt;ID HERE&gt;</span>
+
+I have attached two screenshots to this email: one showing my onboarding dashboard with the "Get started" button, and another showing the error page it redirects me to.
+
+Could you please look into this and provide an updated link so I can complete my assessment and proceed with the project?
+
+Thank you for your help!
+
+Best regards,
+<span class="ph">&lt;NAME HERE&gt;</span>
+<span class="ph">&lt;YOUR EMAIL HERE&gt;</span></div>
+    </div>
+  </section>
+
+  <section class="guide-section reveal" id="support">
+    <h2>5. Support ticket templates</h2>
+    <p>When a project disappears or tasking stops on Outlier, contacting support is the right move. The widget opens with an AI assistant, so if you want a human, start with a short line like "Please connect me with a support agent," then paste the relevant template below. Swap in the parts highlighted in <span style="color:var(--tan)">tan</span>, and attach screenshots when the form offers that step.</p>
+
+    <div class="template">
+      <div class="template-head">
+        <h3>Template A · Project shows "Unavailable" after passing assessment</h3>
+        <button class="copy-btn" data-copy="tplA">Copy</button>
+      </div>
+      <p class="field-label">Ticket Subject</p>
+      <div class="field-text" id="tplA-subject"><span class="ph">[Project name]</span> showing unavailable after passing assessment</div>
+      <p class="field-label">Tell Us More About the Issue</p>
+      <div class="field-text" id="tplA-body">I passed the <span class="ph">[Project name]</span> assessment and was able to begin tasking. About <span class="ph">[time, e.g. 24 hours]</span> later the "Continue Tasking" button became unclickable, and <span class="ph">[Project name]</span> now shows as "Unavailable" in my project history. I did not receive any notification or explanation about the change.
+
+Could you please look into why <span class="ph">[Project name]</span> became unavailable for me, confirm that my assessment pass and any completed tasks are still recorded, and let me know what I need to do to regain access and continue tasking? I can provide screenshots and my account details if needed. Thank you.</div>
+    </div>
+
+    <div class="template">
+      <div class="template-head">
+        <h3>Template B · "Daily limit reached" and tasking has not resumed</h3>
+        <button class="copy-btn" data-copy="tplB">Copy</button>
+      </div>
+      <p class="field-label">Ticket Subject</p>
+      <div class="field-text" id="tplB-subject"><span class="ph">[Project name]</span> daily limit not resetting, cannot resume tasking</div>
+      <p class="field-label">Tell Us More About the Issue</p>
+      <div class="field-text" id="tplB-body">The "Continue Tasking" button on <span class="ph">[Project name]</span> is disabled and the project shows "Daily limit reached." My latest activity was on <span class="ph">[date]</span>, and it has now been <span class="ph">[number]</span> days with the button still not clickable. The project also shows as unavailable in my history.
+
+Could you confirm whether my daily limit has reset on your end, and if not, when I can expect to resume tasking on <span class="ph">[Project name]</span>? If there is a separate hold on my account or the project, please let me know what it is. I can share screenshots and my account details if helpful. Thank you.</div>
+    </div>
+
+    <div class="template">
+      <div class="template-head">
+        <h3>Template C · Annotator marked "unapproved" and project removed</h3>
+        <button class="copy-btn" data-copy="tplC">Copy</button>
+      </div>
+      <p class="field-label">Ticket Subject</p>
+      <div class="field-text" id="tplC-subject"><span class="ph">[Project name]</span> removed from dashboard after annotator marked unapproved</div>
+      <p class="field-label">Tell Us More About the Issue</p>
+      <div class="field-text" id="tplC-body">I was working on the <span class="ph">[Project name]</span> project and was able to task on it normally. My annotator status then showed as "unapproved," and right after that <span class="ph">[Project name]</span> disappeared from my dashboard entirely. I did not receive any notification explaining why my status changed or why the project was removed.
+
+Could you please clarify what caused my annotator status to become unapproved on <span class="ph">[Project name]</span>, whether this was due to a quality review or something else, and whether there is anything I can do to be reinstated? I would also like to confirm that any work I already completed is still recorded. I can share screenshots and my account details if helpful. Thank you.</div>
+    </div>
+
+    <h3>Quick tips for all three</h3>
+    <ul>
+      <li>The support widget opens with an AI assistant, not a person. Ask to be connected to a support agent first, then paste the fuller message.</li>
+      <li>Use the name your account is actually registered under. A name mismatch causes confusion.</li>
+      <li>Be calm and specific. State what you did, what you expected, and what went wrong.</li>
+    </ul>
+    <div class="tip">Honest expectation: an "unapproved" flag often follows a quality review, and reinstatement is not always possible. Asking clearly still gives you the best shot, and at minimum tells you what to avoid on future projects.</div>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-logo">FK</div>
+  <p class="footer-text">Built different. Building decentralized.</p>
+</footer>
+
+<script>
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  function initStars() {
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight; stars = [];
+    const count = Math.floor((canvas.width * canvas.height) / 8000);
+    for (let i = 0; i < count; i++) { stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: Math.random()*1.2+0.2, opacity: Math.random()*0.4+0.05, speed: Math.random()*0.008+0.002, offset: Math.random()*Math.PI*2 }); }
+  }
+  function draw(t) {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for (const s of stars) { const a = s.opacity*(Math.sin(t*s.speed+s.offset)*0.25+0.75); ctx.beginPath(); ctx.arc(s.x,s.y,s.size,0,Math.PI*2); ctx.fillStyle = `rgba(232,228,222,${a})`; ctx.fill(); }
+    requestAnimationFrame(draw);
+  }
+  initStars(); requestAnimationFrame(draw); window.addEventListener('resize', initStars);
+
+  document.getElementById('mobileToggle').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('open'));
+  document.querySelectorAll('#navLinks a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
+
+  // Copy template (subject + body, optional To line, or full CV)
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.copy;
+      let text;
+      if (id === 'cv') {
+        text = document.getElementById('cv-plain').textContent.trim();
+      } else {
+        const toEl = document.getElementById(id + '-to');
+        const subject = document.getElementById(id + '-subject').innerText;
+        const body = document.getElementById(id + '-body').innerText;
+        text = (toEl ? 'To: ' + toEl.innerText + '\n' : '') + 'Subject: ' + subject + '\n\n' + body;
+      }
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.textContent; btn.textContent = 'Copied'; btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
+      });
+    });
+  });
+
+  const obs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>

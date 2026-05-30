@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guides — Farouk Adam</title>
+<meta name="description" content="Practical guides by Farouk Adam (FK) — getting started on AI annotation platforms, Web3 tooling, and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #000000;
+    --bg-card: #0a0a0a;
+    --tan: #c4a882;
+    --tan-hover: #d4b892;
+    --blue: #4a9eff;
+    --blue-dim: rgba(74, 158, 255, 0.10);
+    --green: #34d874;
+    --green-dim: rgba(52, 216, 116, 0.08);
+    --white: #e8e4de;
+    --white-dim: rgba(232, 228, 222, 0.6);
+    --white-muted: rgba(232, 228, 222, 0.3);
+    --border: rgba(232, 228, 222, 0.06);
+    --border-hover: rgba(232, 228, 222, 0.12);
+    --font-display: 'Space Mono', monospace;
+    --font-body: 'Sora', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--white); font-family: var(--font-body); line-height: 1.7; overflow-x: hidden; }
+  ::selection { background: var(--tan); color: var(--bg); }
+  #starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.2rem 2rem; display: flex; justify-content: space-between; align-items: center;
+    backdrop-filter: blur(16px); background: rgba(0, 0, 0, 0.85); border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--font-display); font-size: 0.95rem; font-weight: 700; color: var(--tan); letter-spacing: 0.04em; text-decoration: none; }
+  .nav-logo span { color: var(--white-muted); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--white-dim); text-decoration: none; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.25s; }
+  .nav-links a:hover { color: var(--white); }
+  .mobile-toggle { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; }
+  .mobile-toggle span { width: 22px; height: 1.5px; background: var(--white); transition: 0.3s; }
+
+  .ambient { position: absolute; border-radius: 50%; filter: blur(140px); pointer-events: none; }
+  .ambient-1 { width: 450px; height: 450px; background: rgba(107, 63, 160, 0.1); top: 0; right: -5%; }
+  .ambient-2 { width: 350px; height: 350px; background: rgba(74, 158, 255, 0.05); bottom: 10%; left: -3%; }
+
+  header.page-head { padding: 10rem 2rem 2rem; max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+  .page-tag { font-family: var(--font-display); font-size: 0.72rem; color: var(--tan); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.2rem; }
+  .page-title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; line-height: 1.15; margin-bottom: 1.2rem; }
+  .page-title .accent { color: var(--tan); }
+  .page-intro { font-size: 1rem; color: var(--white-dim); max-width: 620px; font-weight: 300; line-height: 1.8; }
+
+  section { padding: 3rem 2rem 6rem; max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+
+  .guides-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .guide-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 2rem 1.8rem; transition: all 0.3s; text-decoration: none; color: inherit; display: block;
+  }
+  .guide-card:hover { border-color: rgba(196, 168, 130, 0.2); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.25); }
+  .guide-card.disabled { opacity: 0.55; pointer-events: none; }
+  .guide-badge {
+    font-family: var(--font-display); font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase;
+    padding: 0.25rem 0.6rem; border-radius: 4px; display: inline-block; margin-bottom: 1rem;
+    background: var(--green-dim); color: var(--green);
+  }
+  .guide-badge.soon { background: var(--blue-dim); color: var(--blue); }
+  .guide-card h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .guide-card p { font-size: 0.86rem; color: var(--white-muted); font-weight: 300; line-height: 1.65; }
+  .guide-arrow { margin-top: 1.3rem; font-size: 0.78rem; color: var(--tan); opacity: 0; transform: translateX(-6px); transition: all 0.25s; }
+  .guide-card:hover .guide-arrow { opacity: 1; transform: translateX(0); }
+
+  footer { padding: 3rem 2rem; text-align: center; border-top: 1px solid var(--border); margin-top: 2rem; position: relative; z-index: 1; }
+  .footer-logo { font-family: var(--font-display); font-size: 0.82rem; color: var(--tan); margin-bottom: 0.4rem; font-weight: 700; }
+  .footer-text { font-size: 0.73rem; color: var(--white-muted); }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(16px); padding: 1.5rem 2rem; gap: 1.2rem; border-bottom: 1px solid var(--border); }
+    .mobile-toggle { display: flex; }
+    header.page-head { padding: 8rem 1.5rem 1.5rem; }
+    section { padding: 2rem 1.5rem 4rem; }
+    .guides-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+<div class="ambient ambient-1"></div>
+<div class="ambient ambient-2"></div>
+
+<nav>
+  <a href="https://namedfarouk.xyz/" class="nav-logo">namedfarouk<span>.xyz</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="https://namedfarouk.xyz/#about">About</a></li>
+    <li><a href="https://namedfarouk.xyz/#web3">Web3</a></li>
+    <li><a href="https://namedfarouk.xyz/#roles">Roles</a></li>
+    <li><a href="/guides">Guides</a></li>
+    <li><a href="https://namedfarouk.xyz/#contact">Contact</a></li>
+  </ul>
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="page-head reveal">
+  <p class="page-tag">Guides</p>
+  <h1 class="page-title">Practical <span class="accent">Guides</span></h1>
+  <p class="page-intro">Step-by-step walkthroughs I put together while building and earning across different platforms. Free to use, free to share. Start with whichever one fits where you are.</p>
+</header>
+
+<section>
+  <div class="guides-grid reveal">
+
+    <a href="/guides/ai-annotation" class="guide-card">
+      <span class="guide-badge">Live</span>
+      <h3>AI Annotation Platforms</h3>
+      <p>How to sign up and earn on Outlier and Handshake, a reusable CV template, fixes for common errors, and ready-to-paste support ticket templates for when a project disappears.</p>
+      <div class="guide-arrow">→ Read guide</div>
+    </a>
+
+    <div class="guide-card disabled">
+      <span class="guide-badge soon">Coming soon</span>
+      <h3>Web3 Contributor Starter</h3>
+      <p>How to land your first merged open-source PR across emerging protocols, find good-first-issues, and build an early-contributor track record.</p>
+      <div class="guide-arrow">→ Read guide</div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">FK</div>
+  <p class="footer-text">Built different. Building decentralized.</p>
+</footer>
+
+<script>
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  function initStars() {
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight; stars = [];
+    const count = Math.floor((canvas.width * canvas.height) / 8000);
+    for (let i = 0; i < count; i++) {
+      stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: Math.random()*1.2+0.2, opacity: Math.random()*0.4+0.05, speed: Math.random()*0.008+0.002, offset: Math.random()*Math.PI*2 });
+    }
+  }
+  function draw(t) {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for (const s of stars) {
+      const a = s.opacity * (Math.sin(t*s.speed+s.offset)*0.25+0.75);
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(232, 228, 222, ${a})`; ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  initStars(); requestAnimationFrame(draw); window.addEventListener('resize', initStars);
+  document.getElementById('mobileToggle').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('open'));
+  document.querySelectorAll('#navLinks a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
+  const obs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
