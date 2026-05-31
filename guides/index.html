@@ -6,6 +6,7 @@
 <title>Guides — Farouk Adam</title>
 <meta name="description" content="Practical guides by Farouk Adam (FK) — getting started on AI annotation platforms, Web3 tooling, and more.">
 <link rel="icon" type="image/jpeg" href="/avatar.jpg">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -26,6 +27,36 @@
     --font-display: 'Space Mono', monospace;
     --font-body: 'Sora', sans-serif;
   }
+
+  /* Theme toggle button */
+  .nav-logo { margin-right: auto; }
+  .theme-toggle { background: transparent; border: none; cursor: pointer; padding: 0.3rem; margin-left: 1rem; color: var(--white-dim); display: inline-flex; align-items: center; transition: color 0.2s; }
+  .theme-toggle:hover { color: var(--tan); }
+  .theme-toggle svg { width: 19px; height: 19px; display: block; }
+  .theme-toggle .icon-moon { display: none; }
+  :root[data-theme="light"] .theme-toggle .icon-sun { display: none; }
+  :root[data-theme="light"] .theme-toggle .icon-moon { display: block; }
+
+  /* Light theme */
+  :root[data-theme="light"] {
+    --bg: #f4f1ea;
+    --bg-card: #ffffff;
+    --tan: #a07d4a;
+    --tan-hover: #8a6a3c;
+    --blue: #2563eb;
+    --green: #1f9d57;
+    --white: #1c1a17;
+    --white-dim: rgba(28, 26, 23, 0.66);
+    --white-muted: rgba(28, 26, 23, 0.42);
+    --border: rgba(28, 26, 23, 0.10);
+    --border-hover: rgba(28, 26, 23, 0.18);
+  }
+  :root[data-theme="light"] #starfield { opacity: 0; }
+  :root[data-theme="light"] .ambient { opacity: 0.3; }
+  :root[data-theme="light"] nav { background: rgba(244, 241, 234, 0.85); }
+  :root[data-theme="light"] .nav-links.open { background: rgba(244, 241, 234, 0.97); }
+  :root[data-theme="light"] .btn-primary { color: #fff; }
+  :root[data-theme="light"] .field-text { background: rgba(28, 26, 23, 0.04); }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body { background: var(--bg); color: var(--white); font-family: var(--font-body); line-height: 1.7; overflow-x: hidden; }
@@ -107,6 +138,10 @@
     <li><a href="/guides">Guides</a></li>
     <li><a href="https://namedfarouk.xyz/#contact">Contact</a></li>
   </ul>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle light or dark theme">
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
   <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 
@@ -164,6 +199,16 @@
   initStars(); requestAnimationFrame(draw); window.addEventListener('resize', initStars);
   document.getElementById('mobileToggle').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('open'));
   document.querySelectorAll('#navLinks a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
+  (function(){
+    var root = document.documentElement;
+    var tbtn = document.getElementById('themeToggle');
+    if (tbtn) tbtn.addEventListener('click', function(){
+      var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch(e){}
+    });
+  })();
+
   const obs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 </script>
